@@ -2,7 +2,7 @@ package ru.sberbank.viktormamontov.dao;
 
 import ru.sberbank.viktormamontov.entity.Account;
 
-public interface AccountDAO {
+public interface AccountDao {
 
     Account getById(long id);
 

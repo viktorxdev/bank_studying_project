@@ -4,7 +4,7 @@ import ru.sberbank.viktormamontov.entity.Card;
 
 import java.util.List;
 
-public interface CardDAO {
+public interface CardDao {
 
     Card getById(long id);
 
