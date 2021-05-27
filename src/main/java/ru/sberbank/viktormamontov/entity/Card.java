@@ -9,16 +9,22 @@ public class Card {
     private String number;
     private LocalDate expiration;
     private int cvv;
+    private Status status;
     private Account account;
 
-    public Card(String number, LocalDate expiration, int cvv, Account account) {
+    public Card(String number, LocalDate expiration, int cvv, Status status, Account account) {
         this.number = number;
         this.expiration = expiration;
         this.cvv = cvv;
+        this.status = status;
         this.account = account;
     }
 
     public Card() {
+    }
+
+    public enum Status {
+        ACTIVE, EXPIRED
     }
 
     public long getId() {
@@ -56,17 +62,24 @@ public class Card {
         this.account = account;
     }
 
+    public Status getStatus() {
+        return status;
+    }
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Card card = (Card) o;
-        return id == card.id && cvv == card.cvv && Objects.equals(number, card.number) && Objects.equals(expiration, card.expiration) && Objects.equals(account, card.account);
+        return id == card.id && cvv == card.cvv && Objects.equals(number, card.number) && Objects.equals(expiration, card.expiration) && status == card.status && Objects.equals(account, card.account);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, number, expiration, cvv, account);
+        return Objects.hash(id, number, expiration, cvv, status, account);
     }
 
     @Override
@@ -76,6 +89,7 @@ public class Card {
                 ", number='" + number + '\'' +
                 ", expiration=" + expiration +
                 ", cvv=" + cvv +
+                ", status=" + status +
                 ", account=" + account +
                 '}';
     }
