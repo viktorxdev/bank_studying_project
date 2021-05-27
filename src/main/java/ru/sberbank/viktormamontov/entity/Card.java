@@ -12,7 +12,8 @@ public class Card {
     private Status status;
     private Account account;
 
-    public Card(String number, LocalDate expiration, int cvv, Status status, Account account) {
+    public Card(long id, String number, LocalDate expiration, int cvv, Status status, Account account) {
+        this.id = id;
         this.number = number;
         this.expiration = expiration;
         this.cvv = cvv;

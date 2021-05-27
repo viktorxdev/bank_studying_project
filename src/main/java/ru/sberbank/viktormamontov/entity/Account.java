@@ -9,7 +9,8 @@ public class Account {
     private double balance;
     private Client client;
 
-    public Account(String number, double balance, Client client) {
+    public Account(long id, String number, double balance, Client client) {
+        this.id = id;
         this.number = number;
         this.balance = balance;
         this.client = client;
