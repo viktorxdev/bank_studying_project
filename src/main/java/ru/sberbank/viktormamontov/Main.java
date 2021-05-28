@@ -7,6 +7,7 @@ import ru.sberbank.viktormamontov.entity.Card;
 import ru.sberbank.viktormamontov.entity.Client;
 
 import java.time.LocalDate;
+import java.util.List;
 
 
 public class Main {
@@ -24,40 +25,23 @@ public class Main {
 //        System.out.println(byId);
 
         CardDao cardDao = CardDaoImpl.getInstance();
+//
+//        List<Card> cards = cardDao.getCardsByAccountId(2);
+//        cards.forEach(System.out::println);
 
         Card newCard = new Card();
-        newCard.setNumber("0000 0000 0000 0000");
+        newCard.setNumber("0001 0020 0300 4000");
         newCard.setExpiration(LocalDate.now().plusYears(3));
-        newCard.setCvv("000");
-        newCard.setStatus(Card.Status.ACTIVE);
+        newCard.setCvv("010");
+        newCard.setStatus(Card.Status.EXPIRED);
         newCard.setAccount(byId);
 
         cardDao.add(newCard);
-//        Card byId = cardDao.getById(1);
-//        System.out.println(byId);
 
-
-//        try (Connection connection = DriverManager.getConnection(DbUtil.DB_URL, DbUtil.USER, DbUtil.PASS);) {
-//
-//            try (PreparedStatement statement = connection.prepareStatement("INSERT INTO test VALUES(?)");) {
-//                statement.setString(1, "ififif");
-//                statement.executeUpdate();
-//            } catch (SQLException throwable) {
-//                throwable.printStackTrace();
-//            }
-//
-//            try (Statement st = connection.createStatement();) {
-//                ResultSet resultSet = st.executeQuery("select * from test");
-//                while (resultSet.next()) {
-//                    System.out.println(resultSet.getString("name"));
-//                }
-//                resultSet.close();
-//            } catch (SQLException throwable) {
-//                throwable.printStackTrace();
-//            }
-//        } catch (SQLException throwable) {
-//            throwable.printStackTrace();
-//        }
+        List<Card> cards = cardDao.getCardsByAccountId(1);
+        cards.forEach(System.out::println);
+        System.out.println();
+        System.out.println(newCard);
 
 
     }

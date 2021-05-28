@@ -5,6 +5,7 @@ import ru.sberbank.viktormamontov.entity.Card;
 import ru.sberbank.viktormamontov.entity.mapper.CardMapper;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CardDaoImpl implements CardDao{
@@ -51,6 +52,10 @@ public class CardDaoImpl implements CardDao{
 
             statement.executeUpdate();
 
+            List<Card> cardsByAccountId = getCardsByAccountId(card.getAccount().getId());
+            Card cardWithId = cardsByAccountId.stream().filter(c -> c.getNumber().equals(card.getNumber())).findFirst().get();
+            card.setId(cardWithId.getId());
+
         } catch (SQLException throwable) {
             throwable.printStackTrace();
         }
@@ -58,6 +63,21 @@ public class CardDaoImpl implements CardDao{
 
     @Override
     public List<Card> getCardsByAccountId(long accountId) {
-        return null;
+        List<Card> cards = new ArrayList<>();
+        try (Connection conn = DriverManager.getConnection(DbUtil.DB_URL, DbUtil.USER, DbUtil.PASS);
+        PreparedStatement statement = conn.prepareStatement("SELECT * FROM cards WHERE account_id =?")){
+
+            statement.setLong(1, accountId);
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                Card card = CardMapper.getCardFromResultSet(resultSet);
+                cards.add(card);
+            }
+
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
+        }
+        return cards;
     }
 }

@@ -14,7 +14,6 @@ public class CardMapper {
     public static Card getCardFromResultSet(ResultSet rs) {
         Card card = null;
         try {
-            rs.next();
             long id = rs.getLong("id");
             String number = rs.getString("number");
             LocalDate expiration = rs.getDate("expiration").toLocalDate();
