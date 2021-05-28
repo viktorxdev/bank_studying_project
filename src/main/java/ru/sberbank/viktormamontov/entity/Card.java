@@ -8,11 +8,11 @@ public class Card {
     private long id;
     private String number;
     private LocalDate expiration;
-    private int cvv;
+    private String cvv;
     private Status status;
     private Account account;
 
-    public Card(long id, String number, LocalDate expiration, int cvv, Status status, Account account) {
+    public Card(long id, String number, LocalDate expiration, String cvv, Status status, Account account) {
         this.id = id;
         this.number = number;
         this.expiration = expiration;
@@ -49,10 +49,10 @@ public class Card {
         this.expiration = expiration;
     }
 
-    public int getCvv() {
+    public String getCvv() {
         return cvv;
     }
-    public void setCvv(int cvv) {
+    public void setCvv(String cvv) {
         this.cvv = cvv;
     }
 
