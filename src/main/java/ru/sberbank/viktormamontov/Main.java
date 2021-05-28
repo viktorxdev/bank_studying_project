@@ -14,13 +14,15 @@ public class Main {
 //        Client byId = clientDao.getById(1l);
 //        System.out.println(byId);
 
-//        AccountDao accountDao = AccountDaoImpl.getInstance();
-//        Account byId = accountDao.getById(1);
+        AccountDao accountDao = AccountDaoImpl.getInstance();
+        Account byId = accountDao.getById(1);
+        byId.setBalance(44444.44);
+        accountDao.update(byId);
 //        System.out.println(byId);
 
-        CardDao cardDao = CardDaoImpl.getInstance();
-        Card byId = cardDao.getById(1);
-        System.out.println(byId);
+//        CardDao cardDao = CardDaoImpl.getInstance();
+//        Card byId = cardDao.getById(1);
+//        System.out.println(byId);
 
 
 //        try (Connection connection = DriverManager.getConnection(DbUtil.DB_URL, DbUtil.USER, DbUtil.PASS);) {

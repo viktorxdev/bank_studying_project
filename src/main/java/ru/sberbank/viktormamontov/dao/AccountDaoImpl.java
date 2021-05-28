@@ -4,6 +4,7 @@ import ru.sberbank.viktormamontov.DbUtil;
 import ru.sberbank.viktormamontov.entity.Account;
 import ru.sberbank.viktormamontov.entity.mapper.AccountMapper;
 
+import java.math.BigDecimal;
 import java.sql.*;
 
 public class AccountDaoImpl implements AccountDao {
@@ -37,7 +38,20 @@ public class AccountDaoImpl implements AccountDao {
 
     @Override
     public void update(Account account) {
+        try (Connection conn = DriverManager.getConnection(DbUtil.DB_URL, DbUtil.USER, DbUtil.PASS);
+        PreparedStatement statement =
+                conn.prepareStatement("UPDATE accounts SET number =?, balance =?, client_id =? WHERE id =?")){
 
+            statement.setString(1, account.getNumber());
+            statement.setBigDecimal(2, BigDecimal.valueOf(account.getBalance()));
+            statement.setLong(3, account.getClient().getId());
+            statement.setLong(4, account.getId());
+
+            statement.executeUpdate();
+
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
+        }
     }
 
     @Override
