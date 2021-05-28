@@ -67,7 +67,7 @@ public class Account {
                 "id=" + id +
                 ", number='" + number + '\'' +
                 ", balance=" + balance +
-                ", client=" + client +
+                ", clientId=" + client.getId() +
                 '}';
     }
 }

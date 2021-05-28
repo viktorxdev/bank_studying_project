@@ -1,4 +1,6 @@
-package ru.sberbank.viktormamontov.entity;
+package ru.sberbank.viktormamontov.entity.mapper;
+
+import ru.sberbank.viktormamontov.entity.Client;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

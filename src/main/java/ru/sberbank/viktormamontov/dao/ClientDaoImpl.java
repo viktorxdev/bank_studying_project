@@ -2,11 +2,21 @@ package ru.sberbank.viktormamontov.dao;
 
 import ru.sberbank.viktormamontov.DbUtil;
 import ru.sberbank.viktormamontov.entity.Client;
-import ru.sberbank.viktormamontov.entity.ClientMapper;
+import ru.sberbank.viktormamontov.entity.mapper.ClientMapper;
 
 import java.sql.*;
 
 public class ClientDaoImpl implements ClientDao {
+
+    private static ClientDaoImpl instance;
+    private ClientDaoImpl() {}
+
+    public static ClientDaoImpl getInstance() {
+        if (instance == null) {
+            instance = new ClientDaoImpl();
+        }
+        return instance;
+    }
 
     @Override
     public Client getById(long id) {
@@ -17,6 +27,7 @@ public class ClientDaoImpl implements ClientDao {
 
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
+
             client = ClientMapper.getClientFromResultSet(resultSet);
 
         } catch (SQLException throwable) {

@@ -91,7 +91,7 @@ public class Card {
                 ", expiration=" + expiration +
                 ", cvv=" + cvv +
                 ", status=" + status +
-                ", account=" + account +
+                ", accountId=" + account.getId() +
                 '}';
     }
 }
