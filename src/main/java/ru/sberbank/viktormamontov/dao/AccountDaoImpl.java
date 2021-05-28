@@ -2,7 +2,7 @@ package ru.sberbank.viktormamontov.dao;
 
 import ru.sberbank.viktormamontov.DbUtil;
 import ru.sberbank.viktormamontov.entity.Account;
-import ru.sberbank.viktormamontov.entity.mapper.AccountMapper;
+import ru.sberbank.viktormamontov.dao.mapper.AccountMapper;
 
 import java.math.BigDecimal;
 import java.sql.*;

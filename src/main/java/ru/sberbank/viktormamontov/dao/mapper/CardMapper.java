@@ -1,4 +1,4 @@
-package ru.sberbank.viktormamontov.entity.mapper;
+package ru.sberbank.viktormamontov.dao.mapper;
 
 import ru.sberbank.viktormamontov.dao.AccountDao;
 import ru.sberbank.viktormamontov.dao.AccountDaoImpl;

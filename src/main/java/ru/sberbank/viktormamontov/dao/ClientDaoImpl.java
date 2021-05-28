@@ -2,7 +2,7 @@ package ru.sberbank.viktormamontov.dao;
 
 import ru.sberbank.viktormamontov.DbUtil;
 import ru.sberbank.viktormamontov.entity.Client;
-import ru.sberbank.viktormamontov.entity.mapper.ClientMapper;
+import ru.sberbank.viktormamontov.dao.mapper.ClientMapper;
 
 import java.sql.*;
 
