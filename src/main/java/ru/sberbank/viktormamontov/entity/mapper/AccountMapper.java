@@ -13,7 +13,6 @@ public class AccountMapper {
     public static Account getAccountFromResultSet(ResultSet rs) {
         Account account = null;
         try {
-            rs.next();
             long id = rs.getLong("id");
             String number = rs.getString("number");
             double balance = rs.getBigDecimal("balance").doubleValue();

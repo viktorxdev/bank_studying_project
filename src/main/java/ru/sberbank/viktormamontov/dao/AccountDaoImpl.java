@@ -27,6 +27,7 @@ public class AccountDaoImpl implements AccountDao {
 
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
+            resultSet.next();
 
             account = AccountMapper.getAccountFromResultSet(resultSet);
 
@@ -52,10 +53,5 @@ public class AccountDaoImpl implements AccountDao {
         } catch (SQLException throwable) {
             throwable.printStackTrace();
         }
-    }
-
-    @Override
-    public double getBalance(long id) {
-        return 0;
     }
 }

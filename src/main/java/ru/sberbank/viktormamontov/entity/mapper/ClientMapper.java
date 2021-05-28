@@ -10,7 +10,6 @@ public class ClientMapper {
     public static Client getClientFromResultSet(ResultSet rs) {
         Client client = null;
         try {
-            rs.next();
             long id = rs.getLong("id");
             String firstName = rs.getString("first_name");
             String lastName = rs.getString("last_name");

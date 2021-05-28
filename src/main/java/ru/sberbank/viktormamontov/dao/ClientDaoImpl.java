@@ -27,6 +27,7 @@ public class ClientDaoImpl implements ClientDao {
 
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
+            resultSet.next();
 
             client = ClientMapper.getClientFromResultSet(resultSet);
 

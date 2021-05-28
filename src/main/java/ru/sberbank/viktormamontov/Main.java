@@ -6,6 +6,8 @@ import ru.sberbank.viktormamontov.entity.Account;
 import ru.sberbank.viktormamontov.entity.Card;
 import ru.sberbank.viktormamontov.entity.Client;
 
+import java.time.LocalDate;
+
 
 public class Main {
 
@@ -16,11 +18,21 @@ public class Main {
 
         AccountDao accountDao = AccountDaoImpl.getInstance();
         Account byId = accountDao.getById(1);
-        byId.setBalance(44444.44);
-        accountDao.update(byId);
+//        byId.setBalance(822.44);
+//        accountDao.update(byId);
+
 //        System.out.println(byId);
 
-//        CardDao cardDao = CardDaoImpl.getInstance();
+        CardDao cardDao = CardDaoImpl.getInstance();
+
+        Card newCard = new Card();
+        newCard.setNumber("0000 0000 0000 0000");
+        newCard.setExpiration(LocalDate.now().plusYears(3));
+        newCard.setCvv("000");
+        newCard.setStatus(Card.Status.ACTIVE);
+        newCard.setAccount(byId);
+
+        cardDao.add(newCard);
 //        Card byId = cardDao.getById(1);
 //        System.out.println(byId);
 

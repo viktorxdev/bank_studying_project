@@ -8,5 +8,4 @@ public interface AccountDao {
 
     void update(Account account);
 
-    double getBalance(long id);
 }

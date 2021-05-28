@@ -39,7 +39,21 @@ public class CardDaoImpl implements CardDao{
 
     @Override
     public void add(Card card) {
+        try (Connection conn = DriverManager.getConnection(DbUtil.DB_URL, DbUtil.USER, DbUtil.PASS);
+        PreparedStatement statement =
+                conn.prepareStatement("INSERT INTO cards(number, expiration, cvv, status, account_id) VALUES (?,?,?,?,?)")){
 
+            statement.setString(1, card.getNumber());
+            statement.setDate(2, Date.valueOf(card.getExpiration()));
+            statement.setString(3, card.getCvv());
+            statement.setString(4, card.getStatus().toString());
+            statement.setLong(5, card.getAccount().getId());
+
+            statement.executeUpdate();
+
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
+        }
     }
 
     @Override
