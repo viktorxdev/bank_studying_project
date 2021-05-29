@@ -19,6 +19,10 @@ public class Main {
         BankService bankService = BankServiceImpl.getInstance();
         bankService.issueNewCard(1, "55555444445555522222");
 
+//        CardDao cardDao =CardDaoImpl.getInstance();
+//        Card byNumber = cardDao.getByNumber("5752 9068 2927 8803");
+//        System.out.println(byNumber);
+
 //        ClientDao clientDao = ClientDaoImpl.getInstance();
 //        Client byId = clientDao.getById(1l);
 //        System.out.println(byId);

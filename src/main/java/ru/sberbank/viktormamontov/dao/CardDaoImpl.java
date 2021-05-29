@@ -29,6 +29,26 @@ public class CardDaoImpl implements CardDao{
 
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
+            resultSet.next();
+
+            card = CardMapper.getCardFromResultSet(resultSet);
+
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
+        }
+        return card;
+    }
+
+    @Override
+    public Card getByNumber(String number) {
+        Card card = null;
+
+        try (Connection conn = DriverManager.getConnection(DbUtil.DB_URL, DbUtil.USER, DbUtil.PASS);
+             PreparedStatement statement = conn.prepareStatement("SELECT * FROM cards WHERE number = ?")){
+
+            statement.setString(1, number);
+            ResultSet resultSet = statement.executeQuery();
+            resultSet.next();
 
             card = CardMapper.getCardFromResultSet(resultSet);
 
@@ -52,13 +72,12 @@ public class CardDaoImpl implements CardDao{
 
             statement.executeUpdate();
 
-            List<Card> cardsByAccountId = getCardsByAccountId(card.getAccount().getId());
-            Card cardWithId = cardsByAccountId.stream().filter(c -> c.getNumber().equals(card.getNumber())).findFirst().get();
-            card.setId(cardWithId.getId());
-
         } catch (SQLException throwable) {
             throwable.printStackTrace();
         }
+
+        Card cardWithId = getByNumber(card.getNumber());
+        card.setId(cardWithId.getId());
     }
 
     @Override

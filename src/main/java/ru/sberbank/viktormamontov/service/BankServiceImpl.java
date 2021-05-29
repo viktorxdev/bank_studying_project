@@ -63,7 +63,7 @@ public class BankServiceImpl implements BankService {
 
         StringBuilder number = new StringBuilder();
         for (int i = 0; i < 19; i++) {
-            if ((i +1) % 5 == 0) {
+            if ((i + 1) % 5 == 0) {
                 number.append(" ");
             } else {
                 number.append(random.nextInt(10));
