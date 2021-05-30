@@ -16,8 +16,13 @@ public class Main {
 
     public static void main(String[] args) {
 
+        DbUtil.createAndFillTables();
+
+
         BankService bankService = BankServiceImpl.getInstance();
-        bankService.issueNewCard(1, "55555444445555522222");
+        List<Card> cardsByAccountId = bankService.getCardsByAccountId(1);
+        cardsByAccountId.forEach(System.out::println);
+//        bankService.issueNewCard(1, "55555444445555522222");
 
 //        CardDao cardDao =CardDaoImpl.getInstance();
 //        Card byNumber = cardDao.getByNumber("5752 9068 2927 8803");
