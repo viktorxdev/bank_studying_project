@@ -15,7 +15,7 @@ public class DbUtil {
     private static Properties props = loadProperties();
 
     public static final String JDBC_DRIVER = props.getProperty("datasource.driver");
-    public static final String DB_URL = props.getProperty("datasource.url");
+    public static final String URL = props.getProperty("datasource.url");
     public static final String USER = props.getProperty("datasource.username");
     public static final String PASS = props.getProperty("datasource.password");
 
@@ -46,7 +46,7 @@ public class DbUtil {
 
     private static Properties loadProperties() {
         Properties properties = new Properties();
-        try (InputStream inputStream = DbUtil.class.getClassLoader().getResourceAsStream("database.properties");){
+        try (InputStream inputStream = DbUtil.class.getClassLoader().getResourceAsStream("database.properties")){
             properties.load(inputStream);
         } catch (IOException e) {
             e.printStackTrace();
@@ -61,7 +61,7 @@ public class DbUtil {
         }
         String[] queryArr = queries.toString().split(";");
 
-        try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS)){
+        try (Connection conn = DriverManager.getConnection(URL, USER, PASS)){
             for (int i = 0; i < queryArr.length; i++) {
                 try (PreparedStatement statement = conn.prepareStatement(queryArr[i])) {
                     statement.executeUpdate();

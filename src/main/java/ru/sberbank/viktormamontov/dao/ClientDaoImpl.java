@@ -22,7 +22,7 @@ public class ClientDaoImpl implements ClientDao {
     public Client getById(long id) {
 
         Client client = null;
-        try (Connection conn = DriverManager.getConnection(DbUtil.DB_URL, DbUtil.USER, DbUtil.PASS);
+        try (Connection conn = DriverManager.getConnection(DbUtil.URL, DbUtil.USER, DbUtil.PASS);
              PreparedStatement statement = conn.prepareStatement("SELECT * FROM clients WHERE id=?")) {
 
             statement.setLong(1, id);

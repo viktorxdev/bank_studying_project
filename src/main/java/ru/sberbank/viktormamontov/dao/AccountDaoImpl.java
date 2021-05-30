@@ -22,7 +22,7 @@ public class AccountDaoImpl implements AccountDao {
     @Override
     public Account getById(long id) {
         Account account = null;
-        try (Connection conn = DriverManager.getConnection(DbUtil.DB_URL, DbUtil.USER, DbUtil.PASS);
+        try (Connection conn = DriverManager.getConnection(DbUtil.URL, DbUtil.USER, DbUtil.PASS);
              PreparedStatement statement = conn.prepareStatement("SELECT * FROM accounts WHERE id=?")){
 
             statement.setLong(1, id);
@@ -39,8 +39,8 @@ public class AccountDaoImpl implements AccountDao {
 
     @Override
     public void update(Account account) {
-        try (Connection conn = DriverManager.getConnection(DbUtil.DB_URL, DbUtil.USER, DbUtil.PASS);
-        PreparedStatement statement =
+        try (Connection conn = DriverManager.getConnection(DbUtil.URL, DbUtil.USER, DbUtil.PASS);
+             PreparedStatement statement =
                 conn.prepareStatement("UPDATE accounts SET number =?, balance =?, client_id =? WHERE id =?")){
 
             statement.setString(1, account.getNumber());

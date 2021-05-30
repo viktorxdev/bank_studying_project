@@ -24,7 +24,7 @@ public class CardDaoImpl implements CardDao{
     public Card getById(long id) {
         Card card = null;
 
-        try (Connection conn = DriverManager.getConnection(DbUtil.DB_URL, DbUtil.USER, DbUtil.PASS);
+        try (Connection conn = DriverManager.getConnection(DbUtil.URL, DbUtil.USER, DbUtil.PASS);
              PreparedStatement statement = conn.prepareStatement("SELECT * FROM cards WHERE id=?")){
 
             statement.setLong(1, id);
@@ -43,7 +43,7 @@ public class CardDaoImpl implements CardDao{
     public Card getByNumber(String number) {
         Card card = null;
 
-        try (Connection conn = DriverManager.getConnection(DbUtil.DB_URL, DbUtil.USER, DbUtil.PASS);
+        try (Connection conn = DriverManager.getConnection(DbUtil.URL, DbUtil.USER, DbUtil.PASS);
              PreparedStatement statement = conn.prepareStatement("SELECT * FROM cards WHERE number = ?")){
 
             statement.setString(1, number);
@@ -60,8 +60,8 @@ public class CardDaoImpl implements CardDao{
 
     @Override
     public void add(Card card) {
-        try (Connection conn = DriverManager.getConnection(DbUtil.DB_URL, DbUtil.USER, DbUtil.PASS);
-        PreparedStatement statement =
+        try (Connection conn = DriverManager.getConnection(DbUtil.URL, DbUtil.USER, DbUtil.PASS);
+             PreparedStatement statement =
                 conn.prepareStatement("INSERT INTO cards(number, expiration, cvv, status, account_id) VALUES (?,?,?,?,?)")){
 
             statement.setString(1, card.getNumber());
@@ -83,8 +83,8 @@ public class CardDaoImpl implements CardDao{
     @Override
     public List<Card> getCardsByAccountId(long accountId) {
         List<Card> cards = new ArrayList<>();
-        try (Connection conn = DriverManager.getConnection(DbUtil.DB_URL, DbUtil.USER, DbUtil.PASS);
-        PreparedStatement statement = conn.prepareStatement("SELECT * FROM cards WHERE account_id =?")){
+        try (Connection conn = DriverManager.getConnection(DbUtil.URL, DbUtil.USER, DbUtil.PASS);
+             PreparedStatement statement = conn.prepareStatement("SELECT * FROM cards WHERE account_id =?")){
 
             statement.setLong(1, accountId);
             ResultSet resultSet = statement.executeQuery();
