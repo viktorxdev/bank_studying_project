@@ -61,13 +61,16 @@ public class DbUtil {
         }
         String[] queryArr = queries.toString().split(";");
 
-        for (int i = 0; i < queryArr.length; i++) {
-            try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
-                 PreparedStatement statement = conn.prepareStatement(queryArr[i])) {
-                statement.executeUpdate();
-            } catch (SQLException throwable) {
-                throwable.printStackTrace();
+        try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS)){
+            for (int i = 0; i < queryArr.length; i++) {
+                try (PreparedStatement statement = conn.prepareStatement(queryArr[i])) {
+                    statement.executeUpdate();
+                } catch (SQLException throwable) {
+                    throwable.printStackTrace();
+                }
             }
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
         }
     }
 }
