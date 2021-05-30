@@ -2,21 +2,25 @@ package ru.sberbank.viktormamontov;
 
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.*;
 import java.util.List;
+import java.util.Properties;
 
 
 public class DbUtil {
 
-    public static final String JDBC_DRIVER = "org.h2.Driver";
-    public static final String DB_URL = "jdbc:h2:~/bank_db";
-    public static final String USER = "user";
-    public static final String PASS = "user";
+    private static Properties props = loadProperties();
 
-    private static final String CREATING_TABLES_PATH = "/Users/u19223645/Desktop/sql_create_tables.txt";
-    private static final String FILLING_TABLES_PATH = "/Users/u19223645/Desktop/sql_insert_data.txt";
+    public static final String JDBC_DRIVER = props.getProperty("datasource.driver");
+    public static final String DB_URL = props.getProperty("datasource.url");
+    public static final String USER = props.getProperty("datasource.username");
+    public static final String PASS = props.getProperty("datasource.password");
+
+    private static final String CREATING_TABLES_PATH = props.getProperty("path.creating");
+    private static final String FILLING_TABLES_PATH = props.getProperty("path.filling");
 
     static {
         try {
@@ -28,7 +32,6 @@ public class DbUtil {
     }
 
     public static void createAndFillTables() {
-
         List<String> lines = null;
         try {
             lines = Files.readAllLines(Paths.get(CREATING_TABLES_PATH));
@@ -36,11 +39,19 @@ public class DbUtil {
 
             lines = Files.readAllLines(Paths.get(FILLING_TABLES_PATH));
             doQuery(lines);
-
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
 
+    private static Properties loadProperties() {
+        Properties properties = new Properties();
+        try (InputStream inputStream = DbUtil.class.getClassLoader().getResourceAsStream("database.properties");){
+            properties.load(inputStream);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return properties;
     }
 
     private static void doQuery(List<String> lines) {
@@ -58,6 +69,5 @@ public class DbUtil {
                 throwable.printStackTrace();
             }
         }
-
     }
 }

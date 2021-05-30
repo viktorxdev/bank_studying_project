@@ -20,7 +20,7 @@ public class Main {
 
 
         BankService bankService = BankServiceImpl.getInstance();
-        List<Card> cardsByAccountId = bankService.getCardsByAccountId(1);
+        List<Card> cardsByAccountId = bankService.getCardsByAccountId(2);
         cardsByAccountId.forEach(System.out::println);
 //        bankService.issueNewCard(1, "55555444445555522222");
 
