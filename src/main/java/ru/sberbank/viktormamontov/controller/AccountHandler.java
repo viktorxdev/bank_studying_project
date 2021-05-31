@@ -8,6 +8,7 @@ import ru.sberbank.viktormamontov.service.BankService;
 import ru.sberbank.viktormamontov.service.BankServiceImpl;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -26,21 +27,30 @@ public class AccountHandler implements HttpHandler {
 
         if (requestMethod.equals("GET") && path.matches("\\/accounts\\/\\d+\\/balance")) {
 
-            Map<String, Double> map = bankService.checkBalance(id);
-            String response = new ObjectMapper().writeValueAsString(map);
+            try {
+                Map<String, Double> map = bankService.checkBalance(id);
+                String response = new ObjectMapper().writeValueAsString(map);
+                BankHandler.sendResponse(200, response.getBytes(), exchange);
 
-            BankHandler.sendResponse(200, response.getBytes(), exchange);
+            } catch (SQLException throwable) {
+                throwable.printStackTrace();
+                BankHandler.sendResponse(404, throwable.getMessage().getBytes(), exchange);
+            }
 
         } else if (requestMethod.equals("PATCH") && path.matches("\\/accounts\\/\\d+")) {
 
-            Scanner scanner = new Scanner(exchange.getRequestBody());
-            String requestBody = scanner.nextLine();
+            try {
+                Scanner scanner = new Scanner(exchange.getRequestBody());
+                String requestBody = scanner.nextLine();
 
-            Map<String, Double> map = new ObjectMapper().readValue(requestBody, new TypeReference<Map<String, Double>>() {});
-            bankService.topUpBalance(id, map.get("amount"));
+                Map<String, Double> map = new ObjectMapper().readValue(requestBody, new TypeReference<Map<String, Double>>() {});
+                bankService.topUpBalance(id, map.get("amount"));
+                BankHandler.sendResponse(200, "".getBytes(), exchange);
 
-            BankHandler.sendResponse(200, "".getBytes(), exchange);
-
+            } catch (SQLException throwable) {
+                throwable.printStackTrace();
+                BankHandler.sendResponse(404, throwable.getMessage().getBytes(), exchange);
+            }
         } else {
             BankHandler.sendResponse(404, "invalid method or URL".getBytes(), exchange);
         }

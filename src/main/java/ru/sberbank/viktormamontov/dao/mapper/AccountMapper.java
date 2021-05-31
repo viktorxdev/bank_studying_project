@@ -10,23 +10,17 @@ import java.sql.SQLException;
 
 public class AccountMapper {
 
-    public static Account getAccountFromResultSet(ResultSet rs) {
-        Account account = null;
-        try {
-            long id = rs.getLong("id");
-            String number = rs.getString("number");
-            double balance = rs.getBigDecimal("balance").doubleValue();
-            long clientId = rs.getLong("client_id");
+    public static Account getAccountFromResultSet(ResultSet rs) throws SQLException {
 
-            ClientDao clientDao = ClientDaoImpl.getInstance();
-            Client client = clientDao.getById(clientId);
+        long id = rs.getLong("id");
+        String number = rs.getString("number");
+        double balance = rs.getBigDecimal("balance").doubleValue();
+        long clientId = rs.getLong("client_id");
 
-            account = new Account(id, number, balance, client);
+        ClientDao clientDao = ClientDaoImpl.getInstance();
+        Client client = clientDao.getById(clientId);
 
-        } catch (SQLException throwable) {
-            throwable.printStackTrace();
-        }
-        return account;
+        return new Account(id, number, balance, client);
     }
 
 

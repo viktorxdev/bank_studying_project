@@ -19,7 +19,7 @@ public class ClientDaoImpl implements ClientDao {
     }
 
     @Override
-    public Client getById(long id) {
+    public Client getById(long id) throws SQLException {
 
         Client client = null;
         try (Connection conn = DriverManager.getConnection(DbUtil.URL, DbUtil.USER, DbUtil.PASS);
@@ -30,9 +30,6 @@ public class ClientDaoImpl implements ClientDao {
             resultSet.next();
 
             client = ClientMapper.getClientFromResultSet(resultSet);
-
-        } catch (SQLException throwable) {
-            throwable.printStackTrace();
         }
         return client;
     }

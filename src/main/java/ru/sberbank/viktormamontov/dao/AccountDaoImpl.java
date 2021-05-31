@@ -20,7 +20,7 @@ public class AccountDaoImpl implements AccountDao {
     }
 
     @Override
-    public Account getById(long id) {
+    public Account getById(long id) throws SQLException {
         Account account = null;
         try (Connection conn = DriverManager.getConnection(DbUtil.URL, DbUtil.USER, DbUtil.PASS);
              PreparedStatement statement = conn.prepareStatement("SELECT * FROM accounts WHERE id=?")){
@@ -30,15 +30,12 @@ public class AccountDaoImpl implements AccountDao {
             resultSet.next();
 
             account = AccountMapper.getAccountFromResultSet(resultSet);
-
-        } catch (SQLException throwable) {
-            throwable.printStackTrace();
         }
         return account;
     }
 
     @Override
-    public void update(Account account) {
+    public void update(Account account) throws SQLException {
         try (Connection conn = DriverManager.getConnection(DbUtil.URL, DbUtil.USER, DbUtil.PASS);
              PreparedStatement statement =
                 conn.prepareStatement("UPDATE accounts SET number =?, balance =?, client_id =? WHERE id =?")){
@@ -49,9 +46,6 @@ public class AccountDaoImpl implements AccountDao {
             statement.setLong(4, account.getId());
 
             statement.executeUpdate();
-
-        } catch (SQLException throwable) {
-            throwable.printStackTrace();
         }
     }
 }

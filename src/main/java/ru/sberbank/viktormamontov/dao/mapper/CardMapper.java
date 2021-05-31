@@ -11,24 +11,18 @@ import java.time.LocalDate;
 
 public class CardMapper {
 
-    public static Card getCardFromResultSet(ResultSet rs) {
-        Card card = null;
-        try {
-            long id = rs.getLong("id");
-            String number = rs.getString("number");
-            LocalDate expiration = rs.getDate("expiration").toLocalDate();
-            String cvv = rs.getString("cvv");
-            Card.Status status = Card.Status.valueOf(rs.getString("status"));
-            long accountId = rs.getLong("account_id");
+    public static Card getCardFromResultSet(ResultSet rs) throws SQLException {
 
-            AccountDao accountDao = AccountDaoImpl.getInstance();
-            Account account = accountDao.getById(accountId);
+        long id = rs.getLong("id");
+        String number = rs.getString("number");
+        LocalDate expiration = rs.getDate("expiration").toLocalDate();
+        String cvv = rs.getString("cvv");
+        Card.Status status = Card.Status.valueOf(rs.getString("status"));
+        long accountId = rs.getLong("account_id");
 
-            card = new Card(id,number, expiration, cvv, status, account);
+        AccountDao accountDao = AccountDaoImpl.getInstance();
+        Account account = accountDao.getById(accountId);
 
-        } catch (SQLException throwable) {
-            throwable.printStackTrace();
-        }
-        return card;
+        return new Card(id, number, expiration, cvv, status, account);
     }
 }

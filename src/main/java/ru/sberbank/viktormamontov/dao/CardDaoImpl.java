@@ -21,7 +21,7 @@ public class CardDaoImpl implements CardDao{
     }
 
     @Override
-    public Card getById(long id) {
+    public Card getById(long id) throws SQLException {
         Card card = null;
 
         try (Connection conn = DriverManager.getConnection(DbUtil.URL, DbUtil.USER, DbUtil.PASS);
@@ -33,14 +33,12 @@ public class CardDaoImpl implements CardDao{
 
             card = CardMapper.getCardFromResultSet(resultSet);
 
-        } catch (SQLException throwable) {
-            throwable.printStackTrace();
         }
         return card;
     }
 
     @Override
-    public Card getByNumber(String number) {
+    public Card getByNumber(String number) throws SQLException {
         Card card = null;
 
         try (Connection conn = DriverManager.getConnection(DbUtil.URL, DbUtil.USER, DbUtil.PASS);
@@ -52,14 +50,12 @@ public class CardDaoImpl implements CardDao{
 
             card = CardMapper.getCardFromResultSet(resultSet);
 
-        } catch (SQLException throwable) {
-            throwable.printStackTrace();
         }
         return card;
     }
 
     @Override
-    public void add(Card card) {
+    public void add(Card card) throws SQLException {
         try (Connection conn = DriverManager.getConnection(DbUtil.URL, DbUtil.USER, DbUtil.PASS);
              PreparedStatement statement =
                 conn.prepareStatement("INSERT INTO cards(number, expiration, cvv, status, account_id) VALUES (?,?,?,?,?)")){
@@ -72,8 +68,6 @@ public class CardDaoImpl implements CardDao{
 
             statement.executeUpdate();
 
-        } catch (SQLException throwable) {
-            throwable.printStackTrace();
         }
 
         Card cardWithId = getByNumber(card.getNumber());
@@ -81,7 +75,7 @@ public class CardDaoImpl implements CardDao{
     }
 
     @Override
-    public List<Card> getCardsByAccountId(long accountId) {
+    public List<Card> getCardsByAccountId(long accountId) throws SQLException {
         List<Card> cards = new ArrayList<>();
         try (Connection conn = DriverManager.getConnection(DbUtil.URL, DbUtil.USER, DbUtil.PASS);
              PreparedStatement statement = conn.prepareStatement("SELECT * FROM cards WHERE account_id =?")){
@@ -94,8 +88,6 @@ public class CardDaoImpl implements CardDao{
                 cards.add(card);
             }
 
-        } catch (SQLException throwable) {
-            throwable.printStackTrace();
         }
         return cards;
     }

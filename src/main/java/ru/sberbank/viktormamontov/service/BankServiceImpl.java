@@ -7,6 +7,7 @@ import ru.sberbank.viktormamontov.dao.CardDaoImpl;
 import ru.sberbank.viktormamontov.entity.Account;
 import ru.sberbank.viktormamontov.entity.Card;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
@@ -29,28 +30,30 @@ public class BankServiceImpl implements BankService {
     }
 
     @Override
-    public void issueNewCard(long accountId, String accountNumber) {
+    public void issueNewCard(long accountId, String accountNumber) throws Exception {
         Account account = accountDao.getById(accountId);
         if (account.getNumber().equals(accountNumber)) {
             Card newCard = generateCard(account);
             cardDao.add(newCard);
+        } else {
+            throw new Exception("invalid number");
         }
     }
 
     @Override
-    public List<Card> getCardsByAccountId(long accountId) {
+    public List<Card> getCardsByAccountId(long accountId) throws SQLException {
         return cardDao.getCardsByAccountId(accountId);
     }
 
     @Override
-    public void topUpBalance(long accountId, double amount) {
+    public void topUpBalance(long accountId, double amount) throws SQLException {
         Account account = accountDao.getById(accountId);
         account.setBalance(account.getBalance() + amount);
         accountDao.update(account);
     }
 
     @Override
-    public Map<String, Double> checkBalance(long accountId) {
+    public Map<String, Double> checkBalance(long accountId) throws SQLException {
         Account account = accountDao.getById(accountId);
         double balance = account.getBalance();
 

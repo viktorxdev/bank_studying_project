@@ -10,9 +10,8 @@ import ru.sberbank.viktormamontov.entity.Card;
 import ru.sberbank.viktormamontov.service.BankService;
 import ru.sberbank.viktormamontov.service.BankServiceImpl;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.Collections;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
@@ -32,25 +31,36 @@ public class CardHandler implements HttpHandler {
 
         if (requestMethod.equals("POST") && path.matches("^\\/accounts\\/\\d+\\/cards$")) {
 
-            Scanner scanner = new Scanner(exchange.getRequestBody());
-            String requestBody = scanner.nextLine();
+            try {
+                Scanner scanner = new Scanner(exchange.getRequestBody());
+                String requestBody = scanner.nextLine();
 
-            Map<String, String> map = new ObjectMapper().readValue(requestBody, new TypeReference<Map<String, String>>() {});
-            bankService.issueNewCard(accountId, map.get("number"));
+                Map<String, String> map = new ObjectMapper().readValue(requestBody, new TypeReference<Map<String, String>>() {
+                });
+                bankService.issueNewCard(accountId, map.get("number"));
+                BankHandler.sendResponse(200, "".getBytes(), exchange);
 
-            BankHandler.sendResponse(200, "".getBytes(), exchange);
+            } catch (Exception e) {
+                e.printStackTrace();
+                BankHandler.sendResponse(404, e.getMessage().getBytes(), exchange);
+            }
 
         } else if (requestMethod.equals("GET") && path.matches("^\\/accounts\\/\\d+\\/cards$")) {
 
-            List<Card> cards = bankService.getCardsByAccountId(accountId);
+            try {
+                List<Card> cards = bankService.getCardsByAccountId(accountId);
 
-            ObjectMapper mapper = new ObjectMapper();
-            mapper.registerModule(new JavaTimeModule());
-            mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+                ObjectMapper mapper = new ObjectMapper();
+                mapper.registerModule(new JavaTimeModule());
+                mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 
-            String response = mapper.writeValueAsString(cards);
+                String response = mapper.writeValueAsString(cards);
+                BankHandler.sendResponse(200, response.getBytes(), exchange);
 
-            BankHandler.sendResponse(200, response.getBytes(), exchange);
+            } catch (SQLException throwable) {
+                throwable.printStackTrace();
+                BankHandler.sendResponse(404, throwable.getMessage().getBytes(), exchange);
+            }
 
         } else {
             BankHandler.sendResponse(404, "invalid method or URL".getBytes(), exchange);
