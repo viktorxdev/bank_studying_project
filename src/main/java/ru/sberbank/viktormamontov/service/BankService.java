@@ -16,6 +16,6 @@ public interface BankService {
     // get account from db, update balance, put into db
     void topUpBalance(long accountId, double amount);
 
-    // return map with one entry, where key is number? and value is balance
+    // return map with one entry, where key is string "balance" and value is balance
     Map<String, Double> checkBalance(long accountId);
 }

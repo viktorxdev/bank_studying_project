@@ -52,10 +52,9 @@ public class BankServiceImpl implements BankService {
     @Override
     public Map<String, Double> checkBalance(long accountId) {
         Account account = accountDao.getById(accountId);
-        String number = account.getNumber();
         double balance = account.getBalance();
 
-        return Collections.singletonMap(number, balance);
+        return Collections.singletonMap("balance", balance);
     }
 
     private Card generateCard(Account account) {

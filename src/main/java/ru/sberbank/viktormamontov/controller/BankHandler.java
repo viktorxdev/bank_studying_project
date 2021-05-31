@@ -12,8 +12,6 @@ public class BankHandler implements HttpHandler {
     public void handle(HttpExchange exchange) throws IOException {
         String path = exchange.getRequestURI().getPath();
 
-        System.out.println(path);
-
         if (path.matches("^\\/accounts\\/\\d+\\/cards(\\/\\d+)?$")) {
             new CardHandler().handle(exchange);
         } else if (path.matches("^\\/accounts((\\/\\d+\\/balance)|(\\/\\d+))?$")) {
