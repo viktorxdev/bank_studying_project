@@ -18,16 +18,16 @@ public class BankHandler implements HttpHandler {
         } else if (path.matches("^\\/accounts((\\/\\d+\\/balance)|(\\/\\d+))?$")) {
             new AccountHandler().handle(exchange);
         } else {
-            sendResponse(404, "", exchange);
+            sendResponse(404, "invalid URL".getBytes(), exchange);
         }
 
     }
 
-    public static void sendResponse(int code, String response, HttpExchange exchange) {
+    public static void sendResponse(int code, byte[] response, HttpExchange exchange) {
         try {
-            exchange.sendResponseHeaders(code, response.getBytes().length);
+            exchange.sendResponseHeaders(code, response.length);
             OutputStream responseBody = exchange.getResponseBody();
-            responseBody.write(response.getBytes());
+            responseBody.write(response);
             exchange.close();
         } catch (IOException e) {
             e.printStackTrace();

@@ -1,7 +1,11 @@
 package ru.sberbank.viktormamontov.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.time.LocalDate;
 import java.util.Objects;
+
 
 public class Card {
 
@@ -10,6 +14,7 @@ public class Card {
     private LocalDate expiration;
     private String cvv;
     private Status status;
+    @JsonIgnore
     private Account account;
 
     public Card(long id, String number, LocalDate expiration, String cvv, Status status, Account account) {

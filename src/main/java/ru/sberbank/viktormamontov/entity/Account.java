@@ -1,12 +1,17 @@
 package ru.sberbank.viktormamontov.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.Objects;
+
 
 public class Account {
 
     private long id;
     private String number;
     private double balance;
+    @JsonIgnore
     private Client client;
 
     public Account(long id, String number, double balance, Client client) {

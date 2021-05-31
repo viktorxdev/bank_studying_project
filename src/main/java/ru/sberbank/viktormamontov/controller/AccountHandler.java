@@ -29,7 +29,7 @@ public class AccountHandler implements HttpHandler {
             Map<String, Double> map = bankService.checkBalance(id);
             String response = new ObjectMapper().writeValueAsString(map);
 
-            BankHandler.sendResponse(200, response, exchange);
+            BankHandler.sendResponse(200, response.getBytes(), exchange);
 
         } else if (requestMethod.equals("PATCH") && path.matches("\\/accounts\\/\\d+")) {
 
@@ -39,10 +39,10 @@ public class AccountHandler implements HttpHandler {
             Map<String, Double> map = new ObjectMapper().readValue(requestBody, new TypeReference<Map<String, Double>>() {});
             bankService.topUpBalance(id, map.get("amount"));
 
-            BankHandler.sendResponse(200, "", exchange);
+            BankHandler.sendResponse(200, "".getBytes(), exchange);
 
         } else {
-            BankHandler.sendResponse(404, "", exchange);
+            BankHandler.sendResponse(404, "invalid method or URL".getBytes(), exchange);
         }
     }
 
