@@ -8,8 +8,6 @@ import ru.sberbank.viktormamontov.service.BankService;
 import ru.sberbank.viktormamontov.service.BankServiceImpl;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -31,10 +29,7 @@ public class AccountHandler implements HttpHandler {
             Map<String, Double> map = bankService.checkBalance(id);
             String response = new ObjectMapper().writeValueAsString(map);
 
-            exchange.sendResponseHeaders(200, response.getBytes().length);
-            OutputStream responseBody = exchange.getResponseBody();
-            responseBody.write(response.getBytes());
-            exchange.close();
+            BankHandler.sendResponse(200, response, exchange);
 
         } else if (requestMethod.equals("PATCH") && path.matches("\\/accounts\\/\\d+")) {
 
@@ -44,11 +39,11 @@ public class AccountHandler implements HttpHandler {
             Map<String, Double> map = new ObjectMapper().readValue(requestBody, new TypeReference<Map<String, Double>>() {});
             bankService.topUpBalance(id, map.get("amount"));
 
-            exchange.sendResponseHeaders(200, 0);
-            exchange.close();
+            BankHandler.sendResponse(200, "", exchange);
 
         } else {
-            // 404
+            BankHandler.sendResponse(404, "", exchange);
         }
     }
+
 }

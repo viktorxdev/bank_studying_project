@@ -4,6 +4,7 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
 import java.io.IOException;
+import java.io.OutputStream;
 
 
 public class BankHandler implements HttpHandler {
@@ -17,9 +18,19 @@ public class BankHandler implements HttpHandler {
         } else if (path.matches("^\\/accounts((\\/\\d+\\/balance)|(\\/\\d+))?$")) {
             new AccountHandler().handle(exchange);
         } else {
-
-            //to do: 404 response
+            sendResponse(404, "", exchange);
         }
 
+    }
+
+    public static void sendResponse(int code, String response, HttpExchange exchange) {
+        try {
+            exchange.sendResponseHeaders(code, response.getBytes().length);
+            OutputStream responseBody = exchange.getResponseBody();
+            responseBody.write(response.getBytes());
+            exchange.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
