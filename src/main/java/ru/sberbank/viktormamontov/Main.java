@@ -1,6 +1,7 @@
 package ru.sberbank.viktormamontov;
 
 
+import ru.sberbank.viktormamontov.controller.BankServer;
 import ru.sberbank.viktormamontov.dao.*;
 import ru.sberbank.viktormamontov.entity.Account;
 import ru.sberbank.viktormamontov.entity.Card;
@@ -17,12 +18,13 @@ public class Main {
     public static void main(String[] args) {
 
         DbUtil.createAndFillTables();
+        new BankServer().start();
 
 
-        BankService bankService = BankServiceImpl.getInstance();
-        bankService.issueNewCard(1, "55555444445555522222");
-        List<Card> cardsByAccountId = bankService.getCardsByAccountId(1);
-        cardsByAccountId.forEach(System.out::println);
+//        BankService bankService = BankServiceImpl.getInstance();
+//        bankService.issueNewCard(1, "55555444445555522222");
+//        List<Card> cardsByAccountId = bankService.getCardsByAccountId(1);
+//        cardsByAccountId.forEach(System.out::println);
 
 //        CardDao cardDao =CardDaoImpl.getInstance();
 //        Card byNumber = cardDao.getByNumber("5752 9068 2927 8803");
