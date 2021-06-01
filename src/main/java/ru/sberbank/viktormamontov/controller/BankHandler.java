@@ -17,7 +17,9 @@ public class BankHandler implements HttpHandler {
             new CardHandler().handle(exchange);
         } else if (path.matches("^\\/accounts((\\/\\d+\\/balance)|(\\/\\d+))?$")) {
             new AccountHandler().handle(exchange);
-        } else {
+        } else if (path.matches("^\\/counterparties(\\/\\d+)?$")) {
+            new CounterpartyHandler().handle(exchange);
+        }else {
             sendResponse(404, "invalid URL".getBytes(), exchange);
         }
 
