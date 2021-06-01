@@ -67,6 +67,16 @@ public class CounterpartyDaoImpl implements CounterpartyDao{
         }
         Counterparty withId = getByName(counterparty.getName());
         counterparty.setId(withId.getId());
+
+        try (Connection conn = DriverManager.getConnection(DbUtil.URL, DbUtil.USER, DbUtil.PASS);
+             PreparedStatement statement = conn.prepareStatement("INSERT INTO clients_counterparties VALUES (?, ?)")) {
+
+            // ATTENTION! client id is hardcoded!
+            statement.setLong(1, 1);
+            statement.setLong(2, counterparty.getId());
+
+            statement.executeUpdate();
+        }
     }
 
     @Override
@@ -76,7 +86,7 @@ public class CounterpartyDaoImpl implements CounterpartyDao{
         PreparedStatement statement = conn.prepareStatement("SELECT cp.ID, NAME, INFORMATION FROM COUNTERPARTIES cp\n" +
                 "JOIN CLIENTS_COUNTERPARTIES cc ON cp.ID = cc.COUNTERPARTY_ID\n" +
                 "JOIN CLIENTS C on C.ID = cc.CLIENT_ID\n" +
-                "WHERE C.ID = ?;")) {
+                "WHERE C.ID = ?")) {
 
             statement.setLong(1, clientId);
             ResultSet resultSet = statement.executeQuery();
