@@ -21,4 +21,17 @@ public class BankServer {
     public void start() {
         server.start();
     }
+    public void stop() {
+        if (server != null) {
+            server.stop(0);
+        }
+    }
+
+    public HttpServer getServer() {
+        return server;
+    }
+
+    public void setServer(HttpServer server) {
+        this.server = server;
+    }
 }

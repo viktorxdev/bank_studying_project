@@ -1,5 +1,6 @@
 package ru.sberbank.viktormamontov.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.net.httpserver.HttpExchange;
@@ -33,7 +34,7 @@ public class AccountHandler implements HttpHandler {
                 BankHandler.sendResponse(200, response.getBytes(), exchange);
 
             } catch (SQLException throwable) {
-                throwable.printStackTrace();
+//                throwable.printStackTrace();
                 BankHandler.sendResponse(404, throwable.getMessage().getBytes(), exchange);
             }
 
@@ -44,13 +45,18 @@ public class AccountHandler implements HttpHandler {
                 String requestBody = scanner.nextLine();
 
                 Map<String, Double> map = new ObjectMapper().readValue(requestBody, new TypeReference<Map<String, Double>>() {});
+                if (!map.containsKey("amount")) {
+                    BankHandler.sendResponse(404, "Wrong input data".getBytes(), exchange);
+                    return;
+                }
                 bankService.topUpBalance(id, map.get("amount"));
                 BankHandler.sendResponse(200, "".getBytes(), exchange);
 
             } catch (SQLException throwable) {
-                throwable.printStackTrace();
+//                throwable.printStackTrace();
                 BankHandler.sendResponse(404, throwable.getMessage().getBytes(), exchange);
             }
+
         } else {
             BankHandler.sendResponse(404, "invalid method or URL".getBytes(), exchange);
         }

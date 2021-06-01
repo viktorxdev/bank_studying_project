@@ -37,11 +37,15 @@ public class CardHandler implements HttpHandler {
 
                 Map<String, String> map = new ObjectMapper().readValue(requestBody, new TypeReference<Map<String, String>>() {
                 });
+                if (!map.containsKey("number")) {
+                    BankHandler.sendResponse(404, "Wrong input data".getBytes(), exchange);
+                    return;
+                }
                 bankService.issueNewCard(accountId, map.get("number"));
                 BankHandler.sendResponse(200, "".getBytes(), exchange);
 
             } catch (Exception e) {
-                e.printStackTrace();
+//                e.printStackTrace();
                 BankHandler.sendResponse(404, e.getMessage().getBytes(), exchange);
             }
 
@@ -49,6 +53,10 @@ public class CardHandler implements HttpHandler {
 
             try {
                 List<Card> cards = bankService.getCardsByAccountId(accountId);
+                if (cards.isEmpty()) {
+                    BankHandler.sendResponse(404, "No data is available".getBytes(), exchange);
+                    return;
+                }
 
                 ObjectMapper mapper = new ObjectMapper();
                 mapper.registerModule(new JavaTimeModule());
@@ -58,7 +66,7 @@ public class CardHandler implements HttpHandler {
                 BankHandler.sendResponse(200, response.getBytes(), exchange);
 
             } catch (SQLException throwable) {
-                throwable.printStackTrace();
+//                throwable.printStackTrace();
                 BankHandler.sendResponse(404, throwable.getMessage().getBytes(), exchange);
             }
 
