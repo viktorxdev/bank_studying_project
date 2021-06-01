@@ -11,7 +11,7 @@ public interface CounterpartyDao {
 
     Counterparty getByName(String name) throws SQLException;
 
-    void add(Counterparty counterparty) throws SQLException;
+    void add(Counterparty counterparty, long clientId) throws SQLException;
 
     List<Counterparty> getAllByClientId(long clientId) throws SQLException;
 

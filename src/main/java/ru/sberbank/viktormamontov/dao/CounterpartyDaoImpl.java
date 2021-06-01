@@ -1,9 +1,7 @@
 package ru.sberbank.viktormamontov.dao;
 
 import ru.sberbank.viktormamontov.DbUtil;
-import ru.sberbank.viktormamontov.dao.mapper.AccountMapper;
 import ru.sberbank.viktormamontov.dao.mapper.CounterpartyMapper;
-import ru.sberbank.viktormamontov.entity.Account;
 import ru.sberbank.viktormamontov.entity.Counterparty;
 
 import java.math.BigDecimal;
@@ -55,13 +53,14 @@ public class CounterpartyDaoImpl implements CounterpartyDao{
 
 
     @Override
-    public void add(Counterparty counterparty) throws SQLException {
+    public void add(Counterparty counterparty, long clientId) throws SQLException {
         try (Connection conn = DriverManager.getConnection(DbUtil.URL, DbUtil.USER, DbUtil.PASS);
              PreparedStatement statement =
-                     conn.prepareStatement("INSERT INTO counterparties(name, information) VALUES (?,?)")){
+                     conn.prepareStatement("INSERT INTO counterparties(name, information, balance) VALUES (?,?,?)")){
 
             statement.setString(1, counterparty.getName());
             statement.setString(2, counterparty.getInformation());
+            statement.setBigDecimal(3, BigDecimal.valueOf(counterparty.getBalance()));
 
             statement.executeUpdate();
         }
@@ -71,8 +70,7 @@ public class CounterpartyDaoImpl implements CounterpartyDao{
         try (Connection conn = DriverManager.getConnection(DbUtil.URL, DbUtil.USER, DbUtil.PASS);
              PreparedStatement statement = conn.prepareStatement("INSERT INTO clients_counterparties VALUES (?, ?)")) {
 
-            // ATTENTION! client id is hardcoded!
-            statement.setLong(1, 1);
+            statement.setLong(1, clientId);
             statement.setLong(2, counterparty.getId());
 
             statement.executeUpdate();
@@ -83,7 +81,7 @@ public class CounterpartyDaoImpl implements CounterpartyDao{
     public List<Counterparty> getAllByClientId(long clientId) throws SQLException {
         List<Counterparty> list = new ArrayList<>();
         try (Connection conn = DriverManager.getConnection(DbUtil.URL, DbUtil.USER, DbUtil.PASS);
-        PreparedStatement statement = conn.prepareStatement("SELECT cp.ID, NAME, INFORMATION FROM COUNTERPARTIES cp\n" +
+        PreparedStatement statement = conn.prepareStatement("SELECT cp.ID, NAME, INFORMATION, BALANCE FROM COUNTERPARTIES cp\n" +
                 "JOIN CLIENTS_COUNTERPARTIES cc ON cp.ID = cc.COUNTERPARTY_ID\n" +
                 "JOIN CLIENTS C on C.ID = cc.CLIENT_ID\n" +
                 "WHERE C.ID = ?")) {
@@ -103,11 +101,12 @@ public class CounterpartyDaoImpl implements CounterpartyDao{
     public void update(Counterparty counterparty) throws SQLException {
         try (Connection conn = DriverManager.getConnection(DbUtil.URL, DbUtil.USER, DbUtil.PASS);
              PreparedStatement statement =
-                     conn.prepareStatement("UPDATE counterparties SET name =?, information =? WHERE id =?")){
+                     conn.prepareStatement("UPDATE counterparties SET name =?, information =?, balance =? WHERE id =?")){
 
             statement.setString(1, counterparty.getName());
             statement.setString(2, counterparty.getInformation());
-            statement.setLong(3, counterparty.getId());
+            statement.setBigDecimal(3, BigDecimal.valueOf(counterparty.getBalance()));
+            statement.setLong(4, counterparty.getId());
 
             statement.executeUpdate();
         }

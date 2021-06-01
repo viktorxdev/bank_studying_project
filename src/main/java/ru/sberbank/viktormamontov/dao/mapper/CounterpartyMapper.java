@@ -12,7 +12,8 @@ public class CounterpartyMapper {
         long id = rs.getLong("id");
         String name = rs.getString("name");
         String information = rs.getString("information");
+        double balance = rs.getBigDecimal("balance").doubleValue();
 
-        return new Counterparty(id, name, information);
+        return new Counterparty(id, name, information, balance);
     }
 }

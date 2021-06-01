@@ -1,11 +1,9 @@
 package ru.sberbank.viktormamontov.service;
 
-import ru.sberbank.viktormamontov.dao.AccountDao;
-import ru.sberbank.viktormamontov.dao.AccountDaoImpl;
-import ru.sberbank.viktormamontov.dao.CardDao;
-import ru.sberbank.viktormamontov.dao.CardDaoImpl;
+import ru.sberbank.viktormamontov.dao.*;
 import ru.sberbank.viktormamontov.entity.Account;
 import ru.sberbank.viktormamontov.entity.Card;
+import ru.sberbank.viktormamontov.entity.Counterparty;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -18,6 +16,7 @@ public class BankServiceImpl implements BankService {
 
     private AccountDao accountDao = AccountDaoImpl.getInstance();
     private CardDao cardDao = CardDaoImpl.getInstance();
+    private CounterpartyDao counterpartyDao = CounterpartyDaoImpl.getInstance();
 
     private static BankServiceImpl instance;
     private BankServiceImpl() {}
@@ -58,6 +57,23 @@ public class BankServiceImpl implements BankService {
         double balance = account.getBalance();
 
         return Collections.singletonMap("balance", balance);
+    }
+
+    @Override
+    public void addNewCounterparty(Counterparty counterparty, long clientId) throws SQLException {
+        counterpartyDao.add(counterparty, clientId);
+    }
+
+    @Override
+    public List<Counterparty> getCounterpartiesByClientId(long clientId) throws SQLException {
+        return counterpartyDao.getAllByClientId(clientId);
+    }
+
+    @Override
+    public void transferMoney(double amount, long counterpartyId) throws SQLException {
+        Counterparty byId = counterpartyDao.getById(counterpartyId);
+        byId.setBalance(byId.getBalance() + amount);
+        counterpartyDao.update(byId);
     }
 
     private Card generateCard(Account account) {
