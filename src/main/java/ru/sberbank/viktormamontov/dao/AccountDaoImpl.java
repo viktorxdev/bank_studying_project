@@ -35,6 +35,21 @@ public class AccountDaoImpl implements AccountDao {
     }
 
     @Override
+    public Account getByNumber(String number) throws SQLException {
+        Account account = null;
+        try (Connection conn = DriverManager.getConnection(DbUtil.URL, DbUtil.USER, DbUtil.PASS);
+             PreparedStatement statement = conn.prepareStatement("SELECT * FROM accounts WHERE number=?")){
+
+            statement.setString(1, number);
+            ResultSet resultSet = statement.executeQuery();
+            resultSet.next();
+
+            account = AccountMapper.getAccountFromResultSet(resultSet);
+        }
+        return account;
+    }
+
+    @Override
     public void update(Account account) throws SQLException {
         try (Connection conn = DriverManager.getConnection(DbUtil.URL, DbUtil.USER, DbUtil.PASS);
              PreparedStatement statement =

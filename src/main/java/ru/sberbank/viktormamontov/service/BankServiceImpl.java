@@ -70,7 +70,11 @@ public class BankServiceImpl implements BankService {
     }
 
     @Override
-    public void transferMoney(double amount, long counterpartyId) throws SQLException {
+    public void transferMoney(double amount, long counterpartyId, String accountNumber) throws SQLException {
+        Account account = accountDao.getByNumber(accountNumber);
+        account.setBalance(account.getBalance() - amount);
+        accountDao.update(account);
+
         Counterparty byId = counterpartyDao.getById(counterpartyId);
         byId.setBalance(byId.getBalance() + amount);
         counterpartyDao.update(byId);

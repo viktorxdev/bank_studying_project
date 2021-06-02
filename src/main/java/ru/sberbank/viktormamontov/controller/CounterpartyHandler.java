@@ -24,6 +24,8 @@ public class CounterpartyHandler implements HttpHandler {
 
         String requestMethod = exchange.getRequestMethod();
 
+        Scanner scanner = null;
+
         if (requestMethod.equals("GET") && path.matches("^\\/counterparties$")) {
 
             try {
@@ -40,7 +42,7 @@ public class CounterpartyHandler implements HttpHandler {
         } else if (requestMethod.equals("POST") && path.matches("^\\/counterparties$")) {
 
             try {
-                Scanner scanner = new Scanner(exchange.getRequestBody());
+                scanner = new Scanner(exchange.getRequestBody());
                 String requestBody = scanner.nextLine();
 
                 Counterparty counterparty = new ObjectMapper().readValue(requestBody, Counterparty.class);
@@ -60,15 +62,17 @@ public class CounterpartyHandler implements HttpHandler {
                 String[] split = path.split("/");
                 long id = Long.parseLong(split[2]);
 
-                Scanner scanner = new Scanner(exchange.getRequestBody());
+                scanner = new Scanner(exchange.getRequestBody());
                 String requestBody = scanner.nextLine();
 
-                Map<String, Double> map = new ObjectMapper().readValue(requestBody, new TypeReference<Map<String, Double>>() {});
-                if (!map.containsKey("amount")) {
+                Map<String, Object> map = new ObjectMapper().readValue(requestBody, new TypeReference<Map<String, Object>>() {});
+                if (!map.containsKey("amount") && !map.containsKey("number")) {
                     BankHandler.sendResponse(404, "Wrong input data".getBytes(), exchange);
                     return;
                 }
-                bankService.transferMoney(map.get("amount"), id);
+                Double amount = (Double) map.get("amount");
+                String number = (String) map.get("number");
+                bankService.transferMoney(amount, id, number);
                 BankHandler.sendResponse(200, "".getBytes(), exchange);
 
 

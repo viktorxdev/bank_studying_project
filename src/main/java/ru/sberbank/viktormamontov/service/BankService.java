@@ -27,6 +27,6 @@ public interface BankService {
     //get list of counterparties by client id
     List<Counterparty> getCounterpartiesByClientId(long clientId) throws SQLException;
 
-    //transfer money to counterparty with specified id
-    void transferMoney(double amount, long counterpartyId) throws SQLException;
+    //transfer money to counterparty with specified id from account
+    void transferMoney(double amount, long counterpartyId, String accountNumber) throws SQLException;
 }
