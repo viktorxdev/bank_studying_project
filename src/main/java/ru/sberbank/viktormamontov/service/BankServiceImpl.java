@@ -52,7 +52,7 @@ public class BankServiceImpl implements BankService {
     }
 
     @Override
-    public Map<String, Double> checkBalance(long accountId) throws SQLException {
+    public Map<String, Double> getBalance(long accountId) throws SQLException {
         Account account = accountDao.getById(accountId);
         double balance = account.getBalance();
 

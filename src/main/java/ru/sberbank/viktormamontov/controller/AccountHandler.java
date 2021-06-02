@@ -1,6 +1,5 @@
 package ru.sberbank.viktormamontov.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.net.httpserver.HttpExchange;
@@ -29,7 +28,7 @@ public class AccountHandler implements HttpHandler {
         if (requestMethod.equals("GET") && path.matches("\\/accounts\\/\\d+\\/balance")) {
 
             try {
-                Map<String, Double> map = bankService.checkBalance(id);
+                Map<String, Double> map = bankService.getBalance(id);
                 String response = new ObjectMapper().writeValueAsString(map);
                 BankHandler.sendResponse(200, response.getBytes(), exchange);
 

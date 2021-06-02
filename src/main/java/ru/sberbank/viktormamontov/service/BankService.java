@@ -19,7 +19,7 @@ public interface BankService {
     void topUpBalance(long accountId, double amount) throws SQLException;
 
     // return map with one entry, where key is string "balance" and value is balance
-    Map<String, Double> checkBalance(long accountId) throws SQLException;
+    Map<String, Double> getBalance(long accountId) throws SQLException;
 
     //add new counterparty to client
     void addNewCounterparty(Counterparty counterparty, long clientId) throws SQLException;
