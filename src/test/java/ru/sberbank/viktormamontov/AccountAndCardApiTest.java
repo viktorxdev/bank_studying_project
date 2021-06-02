@@ -17,7 +17,7 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class BankServerTest {
+class AccountAndCardApiTest {
 
     BankServer server;
     HttpClient client;
