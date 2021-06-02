@@ -1,6 +1,8 @@
 package ru.sberbank.viktormamontov;
 
 
+import org.apache.commons.dbcp2.BasicDataSource;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -22,13 +24,23 @@ public class DbUtil {
     private static final String CREATING_TABLES_PATH = props.getProperty("path.creating");
     private static final String FILLING_TABLES_PATH = props.getProperty("path.filling");
 
-    static {
-        try {
-            Class.forName(JDBC_DRIVER);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
+    private static BasicDataSource ds = new BasicDataSource();
 
+    static {
+        ds.setDriverClassName(JDBC_DRIVER);
+        ds.setUrl(URL);
+        ds.setUsername(USER);
+        ds.setPassword(PASS);
+        ds.setMinIdle(5);
+        ds.setMaxIdle(10);
+        ds.setMaxOpenPreparedStatements(100);
+    }
+
+    public static Connection getConnection() throws SQLException {
+        return ds.getConnection();
+    }
+    public static void shutdownDatasource() throws SQLException {
+        ds.close();
     }
 
     public static void createAndFillTables() {
@@ -61,7 +73,7 @@ public class DbUtil {
         }
         String[] queryArr = queries.toString().split(";");
 
-        try (Connection conn = DriverManager.getConnection(URL, USER, PASS)){
+        try (Connection conn = DbUtil.getConnection()){
             for (int i = 0; i < queryArr.length; i++) {
                 try (PreparedStatement statement = conn.prepareStatement(queryArr[i])) {
                     statement.executeUpdate();

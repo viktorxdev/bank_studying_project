@@ -24,7 +24,7 @@ public class CardDaoImpl implements CardDao{
     public Card getById(long id) throws SQLException {
         Card card = null;
 
-        try (Connection conn = DriverManager.getConnection(DbUtil.URL, DbUtil.USER, DbUtil.PASS);
+        try (Connection conn = DbUtil.getConnection();
              PreparedStatement statement = conn.prepareStatement("SELECT * FROM cards WHERE id=?")){
 
             statement.setLong(1, id);
@@ -41,7 +41,7 @@ public class CardDaoImpl implements CardDao{
     public Card getByNumber(String number) throws SQLException {
         Card card = null;
 
-        try (Connection conn = DriverManager.getConnection(DbUtil.URL, DbUtil.USER, DbUtil.PASS);
+        try (Connection conn = DbUtil.getConnection();
              PreparedStatement statement = conn.prepareStatement("SELECT * FROM cards WHERE number = ?")){
 
             statement.setString(1, number);
@@ -56,7 +56,7 @@ public class CardDaoImpl implements CardDao{
 
     @Override
     public void add(Card card) throws SQLException {
-        try (Connection conn = DriverManager.getConnection(DbUtil.URL, DbUtil.USER, DbUtil.PASS);
+        try (Connection conn = DbUtil.getConnection();
              PreparedStatement statement =
                 conn.prepareStatement("INSERT INTO cards(number, expiration, cvv, status, account_id) VALUES (?,?,?,?,?)")){
 
@@ -77,7 +77,7 @@ public class CardDaoImpl implements CardDao{
     @Override
     public List<Card> getCardsByAccountId(long accountId) throws SQLException {
         List<Card> cards = new ArrayList<>();
-        try (Connection conn = DriverManager.getConnection(DbUtil.URL, DbUtil.USER, DbUtil.PASS);
+        try (Connection conn = DbUtil.getConnection();
              PreparedStatement statement = conn.prepareStatement("SELECT * FROM cards WHERE account_id =?")){
 
             statement.setLong(1, accountId);

@@ -24,7 +24,7 @@ public class CounterpartyDaoImpl implements CounterpartyDao{
     @Override
     public Counterparty getById(long id) throws SQLException {
         Counterparty counterparty = null;
-        try (Connection conn = DriverManager.getConnection(DbUtil.URL, DbUtil.USER, DbUtil.PASS);
+        try (Connection conn = DbUtil.getConnection();
              PreparedStatement statement = conn.prepareStatement("SELECT * FROM counterparties WHERE id=?")){
 
             statement.setLong(1, id);
@@ -39,7 +39,7 @@ public class CounterpartyDaoImpl implements CounterpartyDao{
     @Override
     public Counterparty getByName(String name) throws SQLException {
         Counterparty counterparty = null;
-        try (Connection conn = DriverManager.getConnection(DbUtil.URL, DbUtil.USER, DbUtil.PASS);
+        try (Connection conn = DbUtil.getConnection();
              PreparedStatement statement = conn.prepareStatement("SELECT * FROM counterparties WHERE name=?")){
 
             statement.setString(1, name);
@@ -54,7 +54,7 @@ public class CounterpartyDaoImpl implements CounterpartyDao{
 
     @Override
     public void add(Counterparty counterparty, long clientId) throws SQLException {
-        try (Connection conn = DriverManager.getConnection(DbUtil.URL, DbUtil.USER, DbUtil.PASS);
+        try (Connection conn = DbUtil.getConnection();
              PreparedStatement statement =
                      conn.prepareStatement("INSERT INTO counterparties(name, information, balance) VALUES (?,?,?)")){
 
@@ -67,7 +67,7 @@ public class CounterpartyDaoImpl implements CounterpartyDao{
         Counterparty withId = getByName(counterparty.getName());
         counterparty.setId(withId.getId());
 
-        try (Connection conn = DriverManager.getConnection(DbUtil.URL, DbUtil.USER, DbUtil.PASS);
+        try (Connection conn = DbUtil.getConnection();
              PreparedStatement statement = conn.prepareStatement("INSERT INTO clients_counterparties VALUES (?, ?)")) {
 
             statement.setLong(1, clientId);
@@ -80,7 +80,7 @@ public class CounterpartyDaoImpl implements CounterpartyDao{
     @Override
     public List<Counterparty> getAllByClientId(long clientId) throws SQLException {
         List<Counterparty> list = new ArrayList<>();
-        try (Connection conn = DriverManager.getConnection(DbUtil.URL, DbUtil.USER, DbUtil.PASS);
+        try (Connection conn = DbUtil.getConnection();
         PreparedStatement statement = conn.prepareStatement("SELECT cp.ID, NAME, INFORMATION, BALANCE FROM COUNTERPARTIES cp\n" +
                 "JOIN CLIENTS_COUNTERPARTIES cc ON cp.ID = cc.COUNTERPARTY_ID\n" +
                 "JOIN CLIENTS C on C.ID = cc.CLIENT_ID\n" +
@@ -99,7 +99,7 @@ public class CounterpartyDaoImpl implements CounterpartyDao{
 
     @Override
     public void update(Counterparty counterparty) throws SQLException {
-        try (Connection conn = DriverManager.getConnection(DbUtil.URL, DbUtil.USER, DbUtil.PASS);
+        try (Connection conn = DbUtil.getConnection();
              PreparedStatement statement =
                      conn.prepareStatement("UPDATE counterparties SET name =?, information =?, balance =? WHERE id =?")){
 
