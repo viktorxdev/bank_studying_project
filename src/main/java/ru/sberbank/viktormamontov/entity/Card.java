@@ -1,7 +1,6 @@
 package ru.sberbank.viktormamontov.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.time.LocalDate;
 import java.util.Objects;
@@ -80,7 +79,7 @@ public class Card {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Card card = (Card) o;
-        return id == card.id && cvv == card.cvv && Objects.equals(number, card.number) && Objects.equals(expiration, card.expiration) && status == card.status && Objects.equals(account, card.account);
+        return id == card.id && Objects.equals(number, card.number) && Objects.equals(expiration, card.expiration) && Objects.equals(cvv, card.cvv) && status == card.status && Objects.equals(account, card.account);
     }
 
     @Override

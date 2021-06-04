@@ -1,8 +1,8 @@
 package ru.sberbank.viktormamontov.dao;
 
 import ru.sberbank.viktormamontov.DbUtil;
-import ru.sberbank.viktormamontov.entity.Card;
 import ru.sberbank.viktormamontov.dao.mapper.CardMapper;
+import ru.sberbank.viktormamontov.entity.Card;
 
 import java.sql.*;
 import java.util.ArrayList;

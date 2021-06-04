@@ -5,7 +5,10 @@ import ru.sberbank.viktormamontov.dao.mapper.CounterpartyMapper;
 import ru.sberbank.viktormamontov.entity.Counterparty;
 
 import java.math.BigDecimal;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 

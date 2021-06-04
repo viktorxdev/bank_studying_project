@@ -1,10 +1,13 @@
 package ru.sberbank.viktormamontov.dao;
 
 import ru.sberbank.viktormamontov.DbUtil;
-import ru.sberbank.viktormamontov.entity.Client;
 import ru.sberbank.viktormamontov.dao.mapper.ClientMapper;
+import ru.sberbank.viktormamontov.entity.Client;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class ClientDaoImpl implements ClientDao {
 
