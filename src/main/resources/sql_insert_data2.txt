@@ -1,0 +1,17 @@
+INSERT INTO clients(first_name, last_name) VALUES ( 'Ivan', 'Ivanov' );
+
+INSERT INTO accounts(number, balance, client_id) VALUES ( '55555444445555522222', 2000.10, 1 );
+INSERT INTO accounts(number, balance, client_id) VALUES ( '44444111115555522222', 878123.71, 1 );
+
+INSERT INTO cards(number, expiration, cvv, status, account_id)
+values ( '1111 3333 2222 8888', PARSEDATETIME('01-03-22', 'dd-MM-yy'), '321', 'ACTIVE', 1 );
+INSERT INTO cards(number, expiration, cvv, status, account_id)
+values ( '1234 1234 1234 1234', PARSEDATETIME('01-11-20', 'dd-MM-yy'), '555', 'EXPIRED', 2 );
+INSERT INTO cards(number, expiration, cvv, status, account_id)
+values ( '1000 4321 8888 0022', PARSEDATETIME('01-08-24', 'dd-MM-yy'), '107', 'ACTIVE', 2 );
+
+INSERT INTO counterparties(name, information, balance) VALUES ( 'some company', 'some information', 120000.33 );
+INSERT INTO counterparties(name, information, balance) VALUES ( 'another company', 'another information', 3500.50 );
+
+INSERT INTO clients_counterparties VALUES ( 1, 1 );
+INSERT INTO clients_counterparties VALUES ( 1, 2 );

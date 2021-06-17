@@ -1,0 +1,44 @@
+DROP TABLE IF EXISTS cards;
+DROP TABLE IF EXISTS accounts;
+DROP TABLE IF EXISTS clients_counterparties;
+DROP TABLE IF EXISTS counterparties;
+DROP TABLE IF EXISTS clients;
+
+
+CREATE TABLE clients (
+    id IDENTITY PRIMARY KEY,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE accounts (
+  id IDENTITY PRIMARY KEY,
+  number VARCHAR(20) NOT NULL UNIQUE,
+  balance DECIMAL(15, 2) NOT NULL,
+  client_id BIGINT,
+  FOREIGN KEY (client_id) REFERENCES clients(id)
+);
+
+CREATE TABLE cards (
+  id IDENTITY PRIMARY KEY,
+  number VARCHAR(19) NOT NULL UNIQUE,
+  expiration DATE NOT NULL,
+  cvv VARCHAR(3) NOT NULL,
+  status VARCHAR(50) NOT NULL,
+  account_id BIGINT,
+  FOREIGN KEY (account_id) REFERENCES accounts(id)
+);
+
+CREATE TABLE counterparties (
+    id IDENTITY PRIMARY KEY,
+    name VARCHAR(50) NOT NULL UNIQUE,
+    information VARCHAR(200),
+    balance Decimal(15, 2) NOT NULL
+);
+
+CREATE TABLE clients_counterparties (
+  client_id BIGINT NOT NULL,
+  counterparty_id BIGINT NOT NULL,
+  FOREIGN KEY (client_id) REFERENCES clients(id),
+  FOREIGN KEY (counterparty_id) REFERENCES counterparties(id)
+);
