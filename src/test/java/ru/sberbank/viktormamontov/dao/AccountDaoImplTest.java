@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class AccountDaoImplTest {
 
-    private AccountDao accountDao = AccountDaoImpl.getInstance();
+    private final AccountDao accountDao = AccountDaoImpl.getInstance();
 
     @BeforeEach
     void setUp() {
